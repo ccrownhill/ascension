@@ -1,12 +1,60 @@
 # Agentic Internship Auto‑Applier — 12‑Hour MVP
 
-A small, focused system that discovers relevant early‑career roles, tailors applications to the candidate’s CV and the company’s values, and autofills forms on Greenhouse and Lever with a human‑approval gate.
+A small, focused system that discovers relevant early‑career roles, tailors applications to the candidate's CV and the company's values, and autofills forms on Greenhouse and Lever with a human‑approval gate.
 
-> **Why this scope**: Greenhouse and Lever share predictable HTML patterns and have fewer blockers than Workday/Taleo. We get a real end‑to‑end demo without fighting captchas or MFA. Other ATS are supported via a “handoff” flow (open link, clipboard package, drafts).
+> **Why this scope**: Greenhouse and Lever share predictable HTML patterns and have fewer blockers than Workday/Taleo. We get a real end‑to‑end demo without fighting captchas or MFA. Other ATS are supported via a "handoff" flow (open link, clipboard package, drafts).
 
 ---
 
-## 1) Goals 
+## Quick Start: Job Search Tool
+
+The `search_jobs()` function in `tools.py` searches Greenhouse job boards using Google Custom Search Engine (CSE).
+
+### Setup
+
+1. **Create a Google Custom Search Engine:**
+   - Go to <https://cse.google.com/>
+   - Click "Create" to make a new search engine
+   - Name it (e.g., "Greenhouse Job Search")
+   - For "Sites to search", enter: `boards.greenhouse.io`
+   - Click "Create" and note your **Search Engine ID**
+
+2. **Get a Google API Key:**
+   - Go to https://console.cloud.google.com/
+   - Enable the Custom Search API
+   - Create an API key (Credentials → Create Credentials → API Key)
+   - Copy your **API Key**
+
+3. **Configure environment variables:**
+
+```bash
+# Add to your .env file:
+GOOGLE_CSE_API_KEY=your_api_key_here
+GOOGLE_CSE_ENGINE_ID=your_search_engine_id_here
+```
+
+4. **Install dependencies with uv:**
+
+```bash
+uv add python-dotenv httpx
+```
+
+### Usage
+
+```bash
+# Search for jobs matching a description
+uv run tools.py "software engineer intern in London"
+
+# Example output:
+# Found 3 job(s):
+# https://boards.greenhouse.io/company1/jobs/...
+# https://boards.greenhouse.io/company2/jobs/...
+# https://boards.greenhouse.io/company3/jobs/...
+```
+
+---
+
+## 1) Goals
 
 **Goals**
 
