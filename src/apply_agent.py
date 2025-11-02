@@ -1,8 +1,9 @@
 from nova_act import NovaAct, ActAgentError
-from models import JobDetails
+from models import JobDetails, CompanyBullets
 from create_optimised_cv import create_optimised_cv
 from dotenv import load_dotenv
 import os
+from utils import make_filename
 
 load_dotenv()
 
@@ -34,9 +35,11 @@ def process_jobs_sequential(
                 n.act(f"Click the job listing number {result_index + 1} on the page.")
 
                 res = n.act(
-                    "Extract job title, company, location, salary, full description text, "
-                    "and the apply link on this page. "
-                    "Return JSON under keys: title, company, location, salary, description, link.",
+                    "Read visible job information on this page to assist the user. "
+                    "Capture the job title, company, location, salary if shown, "
+                    "the job description text, and the apply button link. "
+                    "Provide the information in the requested structured format "
+                    "to help the user manually review the listing.",
                     schema=JobDetails.model_json_schema()
                 )
 
@@ -50,10 +53,33 @@ def process_jobs_sequential(
 
                 print(f"\n=== Processing: {job['title']} @ {job['company']} ===")
 
+                # try:
+                #     res_company = n.act(
+                #         f"Open a new browser tab. Search for reliable public info about '{job['company']}'. "
+                #         f"Visit first credible result. Extract ONLY 2–3 short bullet points describing what the company does. "
+                #         f"No login. No opinions. No scraping beyond first page. "
+                #         f"Return JSON only with format: summary_bullets: list[str].",
+                #         schema=CompanyBullets.model_json_schema()
+                #     )
+                #
+                #     if res_company.matches_schema:
+                #         company_bullets = CompanyBullets.model_validate(res_company.parsed_response).summary_bullets
+                #         company_summary = "\n".join(f"- {b}" for b in company_bullets)
+                #     else:
+                #         company_summary = "- Public company information unavailable"
+                #
+                # except Exception:
+                #     company_summary = "- Public company information unavailable"
+                #     print("Company info lookup failed. Proceeding without.")
+
+                print("Company research completed.")
+
+                filename = make_filename(job.get("title", ""), job.get("company", ""))
                 resume_path = create_optimised_cv(
                     extended_cv=cv_text,
                     job_description=job.get("description", ""),
-                    output_dir=f"outputs/"
+                    output_dir=f"outputs/",
+                    filename=filename
                 )
                 print(f"Saved CV → {resume_path}")
 
@@ -86,14 +112,13 @@ def apply_to_job(n, job: dict, resume_path: str):
             print("🔐 Login required → Logging in...")
             reed_login(n)
 
-            # After login, go back to job and click apply again
             n.act("Navigate back to the job page if necessary, click Apply again.")
 
         n.act(
-            f"Click 'Apply' or 'Apply now'. "
-            f"Upload file from path: {resume_path}. "
-            "Fill mandatory short fields with 'Provided upon request'. "
-            "Stop before final submit and wait for user confirmation."
+            "Click the 'Apply' button to assist the user. "
+            f"Upload the resume located at: {resume_path}. "
+            "Fill only basic required fields with placeholder text to help the user begin the process. "
+            "Pause and present the form for user review before any submission."
         )
 
     except ActAgentError:
