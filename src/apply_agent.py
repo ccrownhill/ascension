@@ -55,10 +55,18 @@ def process_jobs_sequential(
 
                 # try:
                 #     res_company = n.act(
-                #         f"Open a new browser tab. Search for reliable public info about '{job['company']}'. "
-                #         f"Visit first credible result. Extract ONLY 2–3 short bullet points describing what the company does. "
-                #         f"No login. No opinions. No scraping beyond first page. "
-                #         f"Return JSON only with format: summary_bullets: list[str].",
+                #         f"You are assisting the user in understanding the employer better. "
+                #         f"Open a new browser tab without closing or altering the current job page. "
+                #         f"Perform a web search for the company '{job['company']}' including terms like 'official site' "
+                #         f"and industry keywords if needed. "
+                #         f"Click only the first clearly official or authoritative result "
+                #         f"(for example the company homepage or its verified profile). "
+                #         f"Extract ONLY high-level publicly visible facts from that single page: "
+                #         f"- Company industry or sector\n"
+                #         f"- Primary products or services\n"
+                #         f"- Mission or business focus\n"
+                #         f"Do not log in. Do not scrape multiple pages. Do not browse beyond the first page. "
+                #         f"Return exactly 2–3 concise bullet points in JSON under key summary_bullets.",
                 #         schema=CompanyBullets.model_json_schema()
                 #     )
                 #
@@ -71,8 +79,6 @@ def process_jobs_sequential(
                 # except Exception:
                 #     company_summary = "- Public company information unavailable"
                 #     print("Company info lookup failed. Proceeding without.")
-
-                print("Company research completed.")
 
                 filename = make_filename(job.get("title", ""), job.get("company", ""))
                 resume_path = create_optimised_cv(
