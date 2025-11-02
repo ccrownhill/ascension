@@ -241,7 +241,7 @@ Use this template and replace the content with the content from the cv, and prod
 """
 
 
-def create_optimised_cv(extended_cv: str, job_description: str, output_dir: str) -> str:
+def create_optimised_cv(extended_cv: str, job_description: str, output_dir: str, filename: str) -> str:
     """
     Creates an optimised one-page CV in LaTeX and outputs .tex and .pdf in output_dir.
 
@@ -249,6 +249,7 @@ def create_optimised_cv(extended_cv: str, job_description: str, output_dir: str)
         extended_cv (str): extended CV text or path
         job_description (str): job description text or path
         output_dir (str): folder to write .tex and .pdf
+        filename (str): filename of .text and .pdf files
 
     Returns:
         str: absolute path to generated PDF
@@ -257,7 +258,6 @@ def create_optimised_cv(extended_cv: str, job_description: str, output_dir: str)
     if not client.api_key:
         raise ValueError("OPENAI_API_KEY not set.")
 
-    # LLM prompt prep...
     combined_prompt = f"{SYSTEM_PROMPT}\n\nEXTENDED CV:\n{extended_cv}\n\nJOB:\n{job_description}"
 
     response = client.responses.create(model="gpt-5", input=combined_prompt)
@@ -272,8 +272,8 @@ def create_optimised_cv(extended_cv: str, job_description: str, output_dir: str)
     out_dir = Path(output_dir).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    tex_file = out_dir / "optimised_cv.tex"
-    pdf_file = out_dir / "optimised_cv.pdf"
+    tex_file = out_dir / f"{filename}.tex"
+    pdf_file = out_dir / f"{filename}.pdf"
 
     tex_file.write_text(latex_content, encoding="utf-8")
 
@@ -285,32 +285,3 @@ def create_optimised_cv(extended_cv: str, job_description: str, output_dir: str)
         raise RuntimeError("PDF not generated.")
 
     return str(pdf_file)
-
-def main():
-    """Example usage of the CV optimizer."""
-    import sys
-    
-    if len(sys.argv) < 3:
-        print("Usage: python create_optimised_cv.py <extended_cv_file_or_text> <job_description_file_or_text> [output_pdf_path]")
-        print("\nExample:")
-        print("  python create_optimised_cv.py cv.txt job_description.txt")
-        print("  python create_optimised_cv.py cv.txt job_description.txt my_cv.pdf")
-        sys.exit(1)
-    
-    extended_cv = sys.argv[1]
-    job_description = sys.argv[2]
-    output_path = sys.argv[3] if len(sys.argv) > 3 else "optimised_cv.pdf"
-
-    print(output_path)
-    
-    try:
-        pdf_path = create_optimised_cv(extended_cv, job_description, output_path)
-        print(f"\n🎉 Success! Optimized CV saved to: {pdf_path}")
-    except Exception as e:
-        print(f"\n❌ Error: {e}")
-        sys.exit(1)
-
-
-if __name__ == "__main__":
-    main()
-

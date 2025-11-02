@@ -7,3 +7,6 @@ class JobDetails(BaseModel):
     salary: str | None
     description: str | None
     link: str
+
+class CompanyBullets(BaseModel):
+    summary_bullets: list[str]
