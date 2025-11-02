@@ -1,0 +1,45 @@
+MATHIS WEIL
+
+SUMMARY
+Data Science and Machine Learning postgraduate at UCL with a First-Class BSc in Computer Science from QMUL. Experienced in AI-driven systems, semantic search engines, and scalable data pipelines using Python, SQL, and ML frameworks (PyTorch, scikit-learn). Teaching roles at UCL and QMUL.
+
+PROFESSIONAL EXPERIENCE
+Postgraduate Teaching Assistant, University College London — Sep 2025–Present
+Introductory Programming, Computer Architecture & Operating Systems, Software Engineering. Lead practical sessions, assess coursework, feedback to 150+ MSc students.
+
+Computer Science Lab Demonstrator, Queen Mary University of London — Sep 2024–May 2025
+Taught and supported 400+ students. Designed coursework integrating IR and ML in databases. Awarded Demonstrator of the Year.
+
+Software Engineer, Groupe Prunay — Jul 2024–Aug 2024
+Developed software tools for insurance workflows. Authored documentation. Built Next.js + Tailwind showcase site.
+
+Web Scraper — Carbon Credits — Sep 2024
+Python Selenium scraper collecting 5000+ startup data points. Multithreading improved speed ~40%.
+
+Software Engineer, Garage-Hero, Dubai — May 2023–Jul 2023
+React components, automated scrapers, QA and debugging.
+
+EDUCATION
+UCL, MSc Data Science & Machine Learning — Sep 2025–Present
+Bayesian Deep Learning, Digital Finance, Statistical NLP, IR & Data Mining, Multi-Agent AI.
+
+Queen Mary University of London, BSc Computer Science — Sep 2022–Jul 2025
+First Class Honours (83%). Dissertation: AI semantic search engine (Sentence-BERT, pgvector, FastAPI) Recall@20=0.899, MRR=0.843.
+
+PROJECTS
+AI Assistant for IBM SkillsBuild — Sep 2024–May 2025
+Semantic search engine using Sentence-BERT, PostgreSQL+pgvector, FastAPI. Outperformed BM25. Ready for RAG.
+
+SKILLS
+Python, PyTorch, scikit-learn, Pandas, NumPy, SQL, Java, JavaScript, React, Next.js, TypeScript.
+Machine Learning, NLP, Data Mining, Semantic Search, RAG, Deep Learning.
+French (Native), English (Fluent), German (Intermediate).
+
+CERTIFICATIONS
+Mathematics for ML — Imperial College London
+TryHackMe cyber certs
+First Aid (PSC1)
+Cambridge English Advanced (C1)
+
+CONTACT
+London • +33 07 68 34 38 68 • mathis.weil@outlook.com • linkedin.com/in/mathis-weil/
