@@ -123,7 +123,7 @@ Example Output:
 
 A data scientist with over 6 years of experience in machine learning, analytics, and cloud computing. Skilled in Python, TensorFlow, SQL, and AWS. Experienced in building predictive models and data pipelines for finance and healthcare sectors. Managed cross-functional teams and delivered projects involving real-time analytics and automation. Holds a Bachelor’s in Computer Engineering and is currently pursuing a Master’s in Artificial Intelligence. Certified in AWS Machine Learning and proficient in agile methodologies.
 
-
+Don't ask any follow up questions.
 ----------------------------------------------------------------------------------
 
 ##PROMPT 3 - Check if job matches profile
@@ -172,7 +172,7 @@ RULES
 - The tone should be professional and analytical.
 - The decision must be binary — only "yes" or "no", never "maybe" or "partial".
 - Output only JSON, no markdown, commentary, or prose outside the JSON object.
-
+- Don't ask any follow up questions.
 ------------------------------
 INPUTS
 ------------------------------
@@ -420,4 +420,4 @@ JOB_DESCRIPTION:
 
 
 
-Portfolio is attached.
+Portfolio is attached. Don't ask any follow up questions.
