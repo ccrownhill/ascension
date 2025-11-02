@@ -222,7 +222,7 @@ def process_reed_jobs_sequential(
                 print(f"Saved CV → {resume_path}")
 
                 # Apply
-                apply_to_job(job, resume_path, headless=headless)
+                apply_to_job(n, job, resume_path)
 
                 jobs_processed += 1
                 print(f"Applied Successfully")
@@ -240,19 +240,17 @@ def process_reed_jobs_sequential(
                 print("Error during job flow, stopping")
                 break
 
+def apply_to_job(n, job: dict, resume_path: str):
+    try:
+        n.act(
+            f"Click 'Apply' or 'Apply now'. "
+            f"Upload file from path: {resume_path}. "
+            "Fill mandatory short fields with 'Provided upon request'. "
+            "Stop before final submit and wait for user confirmation."
+        )
 
-def apply_to_job(job: dict, resume_path: str, headless: bool):
-    with NovaAct(starting_page=job.get("link",""), headless=headless) as n:
-        try:
-            n.act("Pause and show the page to user for review before applying.")
-            n.act(
-                f"Click 'Apply' or 'Apply now'. "
-                f"Upload file from path: {resume_path}. "
-                "Fill mandatory short fields with 'Provided upon request'. "
-                "Stop before final submit and wait for user confirmation."
-            )
-        except ActAgentError:
-            print(f"Apply failed for {job.get('title')} @ {job.get('company')}")
+    except ActAgentError:
+        print(f"Apply failed for {job.get('title')} @ {job.get('company')}")
 
 
 def main(cv_file: str, headless: bool = False, demo: bool = False):

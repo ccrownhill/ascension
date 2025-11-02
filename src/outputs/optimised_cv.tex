@@ -1,0 +1,190 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[left=0.5in,right=0.5in,top=0.5in,bottom=0.5in]{geometry}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{microtype}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\urlstyle{same}
+\sloppy
+\tolerance=1000
+\emergencystretch=3em
+\hbadness=10000
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}, itemsep=0pt]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[itemsep=0pt, parsep=0pt, leftmargin=*]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge \scshape Mathis Weil} \\ \vspace{1pt}
+    \small London $|$ +33 07 68 34 38 68 $|$ \href{mailto:mathis.weil@outlook.com}{\underline{mathis.weil@outlook.com}} $|$ 
+    \href{https://www.linkedin.com/in/mathis-weil/}{\underline{linkedin.com/in/mathis-weil}}
+\end{center}
+
+\section{Summary}
+\resumeSubHeadingListStart
+  \item\small{Data Science and Machine Learning postgraduate (UCL) with First-Class BSc in Computer Science (QMUL). Experienced delivering AI-driven solutions, semantic search, web-scale data collection, and statistical model development using Python, SQL, and ML frameworks (PyTorch, scikit-learn). Strong communicator with teaching experience to 150+ MSc and 400+ undergraduate students; awarded Demonstrator of the Year.}
+\resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University College London (UCL)}{London, UK}
+      {MSc Data Science \& Machine Learning}{Sep. 2025 -- Present}
+    \resumeSubheading
+      {Queen Mary University of London (QMUL)}{London, UK}
+      {BSc Computer Science, First Class Honours (83\%)}{Sep. 2022 -- Jul. 2025}
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Postgraduate Teaching Assistant}{Sep. 2025 -- Present}
+      {University College London}{London, UK}
+      \resumeItemListStart
+        \resumeItem{Led practicals and assessed coursework for Introductory Programming, Computer Architecture \& Operating Systems, and Software Engineering; provided feedback to 150+ MSc students, translating complex ML/stats concepts into business-ready insights.}
+        \resumeItem{Collaborated with faculty to refine data analysis assignments, ensuring alignment with real-world data science problem solving and stakeholder communication.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Computer Science Lab Demonstrator}{Sep. 2024 -- May 2025}
+      {Queen Mary University of London}{London, UK}
+      \resumeItemListStart
+        \resumeItem{Supported 400+ students across data, IR, and ML modules; designed coursework integrating information retrieval and machine learning with databases to handle large datasets.}
+        \resumeItem{Awarded Demonstrator of the Year for excellence in technical mentoring and collaborative problem solving.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Engineer}{Jul. 2024 -- Aug. 2024}
+      {Groupe Prunay (Insurance)}{Paris, France}
+      \resumeItemListStart
+        \resumeItem{Built software tools and internal documentation to streamline insurance workflows, aligning data solutions with operational stakeholders and business KPIs.}
+        \resumeItem{Developed a Next.js + Tailwind showcase site to communicate analytics features to non-technical teams.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Data Collection Engineer (Contract)}{Sep. 2024}
+      {Carbon Credits Startup (Freelance)}{Remote}
+      \resumeItemListStart
+        \resumeItem{Developed a Python Selenium web scraper collecting 5{,}000+ structured startup data points; implemented multithreading to improve throughput by \textasciitilde 40\%.}
+        \resumeItem{Designed robust data cleaning and schema validation to ensure high-quality datasets for downstream analytics.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Software Engineer}{May 2023 -- Jul. 2023}
+      {Garage-Hero}{Dubai, UAE}
+      \resumeItemListStart
+        \resumeItem{Implemented React components and automated scrapers; executed QA and debugging for data-intensive features, collaborating closely with cross-functional teams.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+          {\textbf{AI Assistant for IBM SkillsBuild} $|$ \emph{Python, FastAPI, PostgreSQL + pgvector, Sentence-BERT, IR/NLP}}{Sep. 2024 -- May 2025}
+          \resumeItemListStart
+            \resumeItem{Built a semantic search engine that outperformed BM25 on internal relevance benchmarks; production-ready for RAG workflows.}
+            \resumeItem{Engineered end-to-end pipelines: embedding generation, vector indexing, API orchestration, and evaluation for ranking quality and latency.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{BSc Dissertation: Semantic Search Engine} $|$ \emph{Python, FastAPI, PostgreSQL + pgvector, Sentence-BERT, Retrieval Evaluation}}{2024 -- 2025}
+          \resumeItemListStart
+            \resumeItem{Designed and evaluated a Sentence-BERT powered search engine with Recall@20 = 0.899 and MRR = 0.843 on held-out queries.}
+            \resumeItem{Developed clean data ingestion and monitoring to manage large corpora and ensure reproducible ML experiments.}
+          \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages \& Data}{: Python, SQL (PostgreSQL), Java, JavaScript/TypeScript} \\
+     \textbf{ML \& Analytics}{: PyTorch, scikit-learn, NLP, Semantic Search, IR, RAG, Data Mining, Evaluation (MRR/Recall)} \\
+     \textbf{Libraries/Tools}{: Pandas, NumPy, FastAPI, pgvector, Selenium, React, Next.js, Git} \\
+     \textbf{Communication}{: Teaching \& mentoring 150+ MSc and 400+ UG students; stakeholder-focused documentation and presentations}
+    }}
+ \end{itemize}
+
+%-----------CERTIFICATIONS-----------
+\section{Certifications \& Awards}
+\resumeSubHeadingListStart
+  \item\small{Mathematics for Machine Learning — Imperial College London}
+  \item\small{Demonstrator of the Year — Queen Mary University of London}
+  \item\small{TryHackMe cyber certificates; First Aid (PSC1); Cambridge English Advanced (C1)}
+\resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}
