@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* FASTTRACK Design System - Dark Glass Morphism */
+    --bg: 220 28% 6%;           /* #0A0D12 */
+    --panel: 0 0% 100% / 0.04;  /* rgba(255,255,255,0.04) */
+    --stroke: 0 0% 100% / 0.08; /* rgba(255,255,255,0.08) */
+    --text: 218 36% 92%;        /* #E8EDF5 */
+    --muted: 216 20% 68%;       /* #A0ABBB */
+    --accent: 199 95% 74%;      /* #7DD3FC */
+    
+    /* shadcn compatibility */
+    --background: 220 28% 6%;
+    --foreground: 218 36% 92%;
+    --card: 0 0% 100% / 0.04;
+    --card-foreground: 218 36% 92%;
+    --popover: 220 28% 8%;
+    --popover-foreground: 218 36% 92%;
+    --primary: 218 36% 92%;
+    --primary-foreground: 220 28% 6%;
+    --secondary: 0 0% 100% / 0.06;
+    --secondary-foreground: 218 36% 92%;
+    --muted: 0 0% 100% / 0.06;
+    --muted-foreground: 216 20% 68%;
+    --accent: 199 95% 74%;
+    --accent-foreground: 220 28% 6%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 218 36% 92%;
+    --border: 0 0% 100% / 0.08;
+    --input: 0 0% 100% / 0.08;
+    --ring: 199 95% 74% / 0.4;
+    --radius: 1rem;
+    
+    /* Effects */
+    --gradient-radial-1: radial-gradient(circle at 20% 20%, hsl(220 60% 12% / 0.4) 0%, transparent 50%);
+    --gradient-radial-2: radial-gradient(circle at 80% 80%, hsl(199 60% 20% / 0.2) 0%, transparent 50%);
+    --noise-opacity: 0.015;
+    --grid-opacity: 0.03;
+    --cursor-shadow-size: 280px;
+    --cursor-shadow-intensity: 0.08;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-[hsl(var(--bg))] text-[hsl(var(--text))];
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .panel {
+    @apply bg-[hsl(var(--panel))] border border-[hsl(var(--stroke))] rounded-2xl backdrop-blur-md;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/40;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-br from-[hsl(var(--text))] to-[hsl(var(--muted))] bg-clip-text text-transparent;
+  }
+}

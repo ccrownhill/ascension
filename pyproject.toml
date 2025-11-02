@@ -6,5 +6,9 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "httpx>=0.28.1",
+    "huggingface-hub>=1.0.1",
+    "langchain>=1.0.3",
+    "langchain-community>=0.4.1",
+    "llama-cpp-python>=0.3.16",
     "python-dotenv>=1.2.1",
 ]
