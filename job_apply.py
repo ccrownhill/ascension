@@ -1,5 +1,4 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from nova_act import ActError, NovaAct
 import os
 import transformers
 import torch
@@ -7,6 +6,8 @@ import json, re
 from pydantic import BaseModel
 from nova_act import NovaAct, ActAgentError
 import fire
+from fpdf import FPDF
+
 
 MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
 pipeline = transformers.pipeline(
@@ -134,6 +135,7 @@ Template:
 CV:
 {cv_text}
 """
+    # prompt = prompt[-4000:] 
 
     msgs = [
         {"role": "system", "content": RESUME_SYSTEM},
@@ -143,74 +145,134 @@ CV:
     out = pipeline(
         msgs,
         max_new_tokens=512,
-        return_full_text=False
+        return_full_text=False,
+        do_sample=False,           # <-- key
+        temperature=0.0,           # <-- key
+        top_p=1.0
     )
 
     return out[0]["generated_text"]
 
-class JobListing(BaseModel):
+def save_resume_pdf(text: str, name: str) -> str:
+    filename = f"outputs/{name.replace(' ', '_')}.pdf"
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=10)
+    for line in text.split("\n"):
+        pdf.multi_cell(0, 5, line)
+    pdf.output(filename)
+    return filename
+
+class JobDetails(BaseModel):
     title: str
     company: str
-    location: str
+    location: str | None
     salary: str | None
+    description: str | None
     link: str
 
-class JobListingList(BaseModel):
-    jobs: list[JobListing]
 
-def search_reed_for_title(job_title: str, headless: bool = False, limit: int = 10) -> list[dict]:
-    listings: list[JobListing] = []
-
-    with NovaAct(starting_page="https://www.reed.co.uk", headless=headless) as nova:
+def process_reed_jobs_sequential(
+    job_title: str,
+    cv_text: str,
+    headless: bool = False,
+    limit: int = 3,
+    demo: bool = False
+):
+    with NovaAct(starting_page="https://www.reed.co.uk", headless=headless) as n:
         try:
-            nova.act(
-                f"Close any cookie or GDPR banners if present. "
-                f"In the search bar enter '{job_title}' and press search. "
-                f"If location field appears, set to 'London'. "  # adjust if needed
+            n.act(
+                f"Close cookie banner if present. "
+                f"Search for '{job_title}' in London and submit search."
             )
+        except ActAgentError:
+            print("Search failed")
+            return
 
-            for _ in range(5):
-                result = nova.act(
-                    "Return the currently visible list of job postings with fields: "
-                    "title, company name, location, salary if present, and job link. "
-                    "Return as JSON list under 'jobs'.",
-                    schema=JobListingList.model_json_schema(),
+        jobs_processed = 0
+        result_index = 0
+
+        while jobs_processed < limit:
+            try:
+                # Jump to result index like the Caltrain sample (no vague 'first unclicked')
+                n.act(f"Click the job listing number {result_index + 1} on the page.")
+                
+                # Extract the full data per Nova schema style
+                res = n.act(
+                    "Extract job title, company, location, salary, full description text, "
+                    "and the apply link on this page. "
+                    "Return JSON under keys: title, company, location, salary, description, link.",
+                    schema=JobDetails.model_json_schema()
                 )
-                if not result.matches_schema:
-                    break
 
-                batch = JobListingList.model_validate(result.parsed_response).jobs
-                listings.extend(batch)
-                if len(listings) >= limit:
-                    break
+                if not res.matches_schema:
+                    print("Schema mismatch, skipping")
+                    n.act("Close job details or navigate back to results")
+                    result_index += 1
+                    continue
 
-                nova.act("Scroll down once")
+                job = JobDetails.model_validate(res.parsed_response).model_dump()
 
-        except ActAgentError as exc:
-            print(f"Search error for '{job_title}': {exc}")
+                print(f"\n=== Processing: {job['title']} @ {job['company']} ===")
 
-    return [l.model_dump() for l in listings[:limit]]
+                # Generate tailored resume
+                resume_text = generate_tailored_resume(cv_text, job)
+                fname = f"{job['title'].replace(' ','_')}_{job['company'].replace(' ','_')}.pdf"
+                resume_path = save_resume_pdf(resume_text, fname)
+                print(f"Saved CV → {resume_path}")
 
-def main(cv_file: str, headless: bool = False):
-    with open(cv_file, "r") as f:
+                # Apply
+                apply_to_job(job, resume_path, headless=headless)
+
+                jobs_processed += 1
+                print(f"Applied Successfully")
+
+                if demo:
+                    print("Demo: stopping after first job")
+                    return
+
+                # Return to results
+                n.act("Close job details and return to results page")
+
+                result_index += 1
+
+            except ActAgentError:
+                print("Error during job flow, stopping")
+                break
+
+
+def apply_to_job(job: dict, resume_path: str, headless: bool):
+    with NovaAct(starting_page=job.get("link",""), headless=headless) as n:
+        try:
+            n.act("Pause and show the page to user for review before applying.")
+            n.act(
+                f"Click 'Apply' or 'Apply now'. "
+                f"Upload file from path: {resume_path}. "
+                "Fill mandatory short fields with 'Provided upon request'. "
+                "Stop before final submit and wait for user confirmation."
+            )
+        except ActAgentError:
+            print(f"Apply failed for {job.get('title')} @ {job.get('company')}")
+
+
+def main(cv_file: str, headless: bool = False, demo: bool = False):
+    with open(cv_file) as f:
         cv_text = f.read()
 
     titles = extract_job_titles(cv_text)
-    print("Titles:", titles)
+    print("Target roles:", titles)
 
-    results = {t: search_reed_for_title(t, headless=headless) for t in titles}
+    if demo and titles:
+        titles = titles[:1]
 
-    tailored_resumes = {}
+    for title in titles:
+        print(f"\n=== Running for: {title} ===")
+        process_reed_jobs_sequential(title, cv_text, headless=headless, limit=3, demo=demo)
 
-    for t, jobs in results.items():
-        if not jobs:
-            continue
-        job = jobs[0]  # highest match only for now
-        tailored_resumes[t] = generate_tailored_resume(cv_text, job)
+        if demo:
+            return
 
-    for title, resume in tailored_resumes.items():
-        print(f"\n--- Tailored Resume for {title} ---")
-        print(resume[:800])
+    print("Done.")
 
 if __name__ == "__main__":
     fire.Fire(main)
